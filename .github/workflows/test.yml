@@ -1,0 +1,20 @@
+on: [push]
+
+jobs:
+  test_composite_action:
+    runs-on: ubuntu-latest
+    name: Test composite action
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: test_case_1
+        uses: ./
+        with:
+          version: v1.2.3
+
+      - run: |
+          test $value = $expected || \
+            { echo "::error expected=$expected,actual=$value::TestFailed"; exit 1; }
+        env:
+          value: ${{ steps.test_case_1.outputs.version }}
+          expected: 1.2.3
