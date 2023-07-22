@@ -9,14 +9,14 @@ inputs:
 outputs:
   version:
     description: "Extracted version"
-    value: ${{ steps.get_version.outputs.version }}
+    value: ${{ steps.result.outputs.version }}
 
 runs:
   using: "composite"
   steps:
-    - name: Trim v of version string
+    - name: Extract version string
       shell: bash
-      id: get_version
+      id: result
       run: |
-        TAG=${{ inputs.version }}
-        echo "version=${TAG#v}" >> $GITHUB_OUTPUT
+        result="$(. ${GITHUB_ACTION_PATH}/main.sh ${{ inputs.version }})"
+        echo "version=$result" >> $GITHUB_OUTPUT

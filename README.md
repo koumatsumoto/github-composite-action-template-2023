@@ -63,3 +63,24 @@ act
 
 actの使い方については以下を参照。
 https://github.com/nektos/act#example-commands
+
+```sh
+VERSION="Version 1.23.456-dev (release mode)"
+VERSION="1.1.2-prerelease+meta"
+VERSION="1.0.0-alpha-a.b-c-somethinglong+build.1-aef.1-its-okay"
+VERSION="99999999999999999999999.999999999999999999.99999999999999999"
+VERSION="1.0.0+0.build.1-rc.10000aaa-kk-0.1"
+#REGEXP='s/^[^0-9]*((0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]))*)?(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))?).*$/\1/p'
+
+LEFT_IGNORABLE_TEXT='^[^0-9]*'
+MAJOR_VERSION='(0|[1-9][0-9]*)'
+MINOR_VERSION='(0|[1-9][0-9]*)'
+PATCH_VERSION='(0|[1-9][0-9]*)'
+VERSION_CORE="${MAJOR_VERSION}\.${MINOR_VERSION}\.${PATCH_VERSION}"
+PRE_RELEASE='(-((0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))'
+BUILD='(\+([0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*))'
+RIGHT_IGNORABLE_TEXT='.*$'
+
+REGEXP="s/${LEFT_IGNORABLE_TEXT}(${VERSION_CORE}${PRE_RELEASE}?${BUILD}?)${RIGHT_IGNORABLE_TEXT}/\1/p"
+echo $VERSION | sed -nre $REGEXP
+```
