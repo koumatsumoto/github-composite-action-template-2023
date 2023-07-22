@@ -50,5 +50,16 @@ GitHub Actionsをローカル環境でテストするためのツール。
 https://github.com/nektos/act
 
 ```sh
-act -l
+act --version  # act version 0.2.48
 ```
+
+## テスト
+
+以下のコマンドで、ローカル環境で開発したGitHub Actionsをテストできる。
+
+```sh
+act
+```
+
+actの使い方については以下を参照。
+https://github.com/nektos/act#example-commands
