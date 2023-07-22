@@ -1,9 +1,10 @@
+name: CI
 on: [push]
 
 jobs:
   test_composite_action:
+    name: Test
     runs-on: ubuntu-latest
-    name: Test composite action
     steps:
       - uses: actions/checkout@v3
 
@@ -11,10 +12,15 @@ jobs:
         uses: ./
         with:
           version: v1.2.3
+      - id: test_case_2
+        uses: ./
+        with:
+          version: 0.12.345
 
       - name: print results
         run: |
           echo ${{ steps.test_case_1.outputs.version }}
+          echo ${{ steps.test_case_2.outputs.version }}
 
       - run: |
           test $value = $expected || \
@@ -22,3 +28,9 @@ jobs:
         env:
           value: ${{ steps.test_case_1.outputs.version }}
           expected: 1.2.3
+      - run: |
+          test $value = $expected || \
+            { echo "::error expected=$expected,actual=$value::TestFailed"; exit 1; }
+        env:
+          value: ${{ steps.test_case_2.outputs.version }}
+          expected: 0.12.345
