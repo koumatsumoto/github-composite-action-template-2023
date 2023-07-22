@@ -12,6 +12,10 @@ jobs:
         with:
           version: v1.2.3
 
+      - name: print results
+        run: |
+          echo ${{ steps.test_case_1.outputs.version }}
+
       - run: |
           test $value = $expected || \
             { echo "::error expected=$expected,actual=$value::TestFailed"; exit 1; }
